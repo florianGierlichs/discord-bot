@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 const { Client, Intents } = require("discord.js");
+const fs = require("fs");
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
 
@@ -9,25 +10,16 @@ const client = new Client({
 });
 
 client.once("ready", () => {
-  console.log("Ready!");
+  console.log("Client Ready!");
 });
 
-client.on("interactionCreate", async (interaction) => {
-  if (!interaction.isCommand()) return;
+const eventFiles = fs
+  .readdirSync("./events")
+  .filter((file) => file.endsWith(".js"));
 
-  const { commandName } = interaction;
-
-  if (commandName === "ping") {
-    await interaction.reply("Pong!");
-  } else if (commandName === "server") {
-    await interaction.reply(
-      `Server name: ${interaction.guild.name}\nTotal members: ${interaction.guild.memberCount}`
-    );
-  } else if (commandName === "user") {
-    await interaction.reply(
-      `Your tag: ${interaction.user.tag}\nYour id: ${interaction.user.id}\nYour username: ${interaction.user.username}`
-    );
-  }
+eventFiles.forEach((file) => {
+  const event = require(`./events/${file}`);
+  client.on(event.name, (...args) => event.execute(...args));
 });
 
-client.login(BOT_TOKEN).then(console.log("client logged in"));
+client.login(BOT_TOKEN).then(console.log("WebSocket connected to discord!"));
