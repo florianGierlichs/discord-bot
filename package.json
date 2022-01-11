@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon"
+    "start": "node index.js",
+    "dev": "nodemon",
+    "deploy-commands": "node deploy-commands.js"
   },
   "author": "",
   "license": "MIT",
