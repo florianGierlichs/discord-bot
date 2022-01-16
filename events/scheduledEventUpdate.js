@@ -1,10 +1,10 @@
 const sendMail = require("../sendMail");
 
 module.exports = {
-  name: "guildScheduledEventCreate",
+  name: "guildScheduledEventUpdate",
   execute(event) {
     if (event.channelId === process.env.CHANNEL_ID) {
-      sendMail("create", event);
+      sendMail("update", event);
     }
   },
 };

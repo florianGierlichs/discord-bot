@@ -10,12 +10,25 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const sendMail = async (event) => {
+const handleEventAction = (action) => {
+  switch (action) {
+    case "create":
+      return "created";
+    case "delete":
+      return "canceled";
+    case "update":
+      return "changed";
+    default:
+      throw new Error("Unknown event action! Mails not sent!");
+  }
+};
+
+const sendMail = async (action, event) => {
   try {
     await transporter.sendMail({
       from: `Lean-Coffee bot ${process.env.MAIL_USER}`,
       to: `${process.env.MAIL_TO}`,
-      subject: event.name,
+      subject: `Lean-Coffee event was ${handleEventAction(action)}`,
       text: `${event.name}\n ${event.description}`,
       html: `<b>${event.name}</b><br><br> ${event.description}`,
     });
