@@ -1,3 +1,5 @@
+const getUpcomingEvent = require("../utils/getUpcomingEvent");
+
 module.exports = {
   name: "interactionCreate",
   execute(interaction) {
@@ -6,18 +8,37 @@ module.exports = {
 
       const { commandName } = interaction;
 
-      if (commandName === "ping") {
-        await interaction.reply({ content: "Pong!", ephemeral: true });
-      } else if (commandName === "server") {
-        await interaction.reply({
-          content: `Server name: ${interaction.guild.name}\nTotal members: ${interaction.guild.memberCount}`,
-          ephemeral: true,
-        });
-      } else if (commandName === "user") {
-        await interaction.reply({
-          content: `Your tag: ${interaction.user.tag}\nYour id: ${interaction.user.id}\nYour username: ${interaction.user.username}`,
-          ephemeral: true,
-        });
+      switch (commandName) {
+        case "ping":
+          await interaction.reply({ content: "Pong!", ephemeral: true });
+          break;
+
+        case "server":
+          await interaction.reply({
+            content: `Server name: ${interaction.guild.name}\nTotal members: ${interaction.guild.memberCount}`,
+            ephemeral: true,
+          });
+          break;
+
+        case "user":
+          await interaction.reply({
+            content: `Your tag: ${interaction.user.tag}\nYour id: ${interaction.user.id}\nYour username: ${interaction.user.username}`,
+            ephemeral: true,
+          });
+          break;
+
+        case "lean-coffee":
+          const upcomingLeanCoffeeEvent = getUpcomingEvent(
+            await interaction.guild.scheduledEvents.fetch()
+          );
+
+          await interaction.reply({
+            content: upcomingLeanCoffeeEvent
+              ? `Upcoming lean-coffee event: ${upcomingLeanCoffeeEvent}`
+              : "There is no scheduled Lean-Coffee at the moment!",
+            ephemeral: true,
+          });
+          break;
       }
     })();
   },
