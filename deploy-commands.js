@@ -18,6 +18,9 @@ const commands = [
   new SlashCommandBuilder()
     .setName("user")
     .setDescription("Replies with user info!"),
+  new SlashCommandBuilder()
+    .setName("lean-coffee")
+    .setDescription("Replies with upcoming lean-coffee event!"),
 ].map((command) => command.toJSON());
 
 const rest = new REST({ version: "9" }).setToken(BOT_TOKEN);

@@ -28,7 +28,7 @@ const sendMail = async (action, event) => {
     await transporter.sendMail({
       from: `Lean-Coffee bot ${process.env.MAIL_USER}`,
       to: `${process.env.MAIL_TO}`,
-      subject: `Lean-Coffee event was ${handleEventAction(action)}`,
+      subject: `Event was ${handleEventAction(action)}!`,
       text: `${event.name}\n ${event.description}`,
       html: `<b>${event.name}</b><br><br> ${event.description}`,
     });
