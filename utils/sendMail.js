@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer");
+const convertTimestamp = require("./convertTimestamp");
 
 const transporter = nodemailer.createTransport({
   host: process.env.MAIL_HOST,
@@ -30,7 +31,9 @@ const sendMail = async (action, event) => {
       to: `${process.env.MAIL_TO}`,
       subject: `Event was ${handleEventAction(action)}!`,
       text: `${event.name}\n ${event.description}`,
-      html: `<b>${event.name}</b><br><br> ${event.description}`,
+      html: `<b style="font-size:18px">${event.name}, ${convertTimestamp(
+        event.scheduledStartTimestamp
+      )}</b><br><br> ${event.description}`,
     });
     console.log("mails sent!");
   } catch (e) {
