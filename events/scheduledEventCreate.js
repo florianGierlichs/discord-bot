@@ -1,4 +1,4 @@
-const sendMail = require("../sendMail");
+const sendMail = require("../utils/sendMail");
 
 module.exports = {
   name: "guildScheduledEventCreate",
