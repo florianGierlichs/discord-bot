@@ -1,14 +1,14 @@
 {
   "name": "discord-bot",
   "version": "1.0.0",
-  "description": "",
+  "description": "This is a simple discord bot to send email notifications about creating, updating and deleting lean-coffee events.",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon",
     "deploy-commands": "node deploy-commands.js"
   },
-  "author": "",
+  "author": "Florian Gierlichs",
   "license": "MIT",
   "dependencies": {
     "@discordjs/builders": "^0.11.0",
