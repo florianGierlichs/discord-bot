@@ -15,7 +15,7 @@ The bot provides the following slash commands:
 
 ## Email Events
 
-The main purpose of the bot is to send an email to a list of recipients, about creation, updates or canceling of a lean-coffee event.
+The main purpose of the bot is to send an email to a list of recipients about creation, updates or canceling of a lean-coffee event.
 
 The bot will only react to events which happen in a channel called `lean-coffee`.
 
