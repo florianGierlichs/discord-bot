@@ -6,7 +6,12 @@ const fs = require("fs");
 const BOT_TOKEN = process.env.BOT_TOKEN;
 
 const client = new Client({
-  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_SCHEDULED_EVENTS],
+  intents: [
+    Intents.FLAGS.GUILDS,
+    Intents.FLAGS.GUILD_SCHEDULED_EVENTS,
+    Intents.FLAGS.DIRECT_MESSAGES,
+  ],
+  partials: ["CHANNEL"],
 });
 
 client.once("ready", () => {
