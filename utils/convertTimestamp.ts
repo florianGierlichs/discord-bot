@@ -1,4 +1,4 @@
-const convertTimestamp = (timestamp) => {
+const convertTimestamp = (timestamp: number) => {
   return new Date(timestamp).toLocaleDateString("de-DE", {
     weekday: "long",
     year: "numeric",
@@ -9,4 +9,4 @@ const convertTimestamp = (timestamp) => {
   });
 };
 
-module.exports = convertTimestamp;
+export default convertTimestamp;

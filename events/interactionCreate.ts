@@ -1,8 +1,9 @@
-const getUpcomingEvent = require("../utils/getUpcomingEvent");
+import { Interaction } from "discord.js";
+import getUpcomingEvent from "../utils/getUpcomingEvent";
 
-module.exports = {
+export default {
   name: "interactionCreate",
-  execute(interaction) {
+  execute(interaction: Interaction) {
     (async () => {
       if (!interaction.isCommand()) return;
 
@@ -14,6 +15,7 @@ module.exports = {
           break;
 
         case "server":
+          if (!interaction.guild) break;
           await interaction.reply({
             content: `Server name: ${interaction.guild.name}\nTotal members: ${interaction.guild.memberCount}`,
             ephemeral: true,
@@ -28,6 +30,7 @@ module.exports = {
           break;
 
         case "lean-coffee":
+          if (!interaction.guild) break;
           const upcomingLeanCoffeeEvent = getUpcomingEvent(
             await interaction.guild.scheduledEvents.fetch()
           );
