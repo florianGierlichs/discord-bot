@@ -1,17 +1,20 @@
-const nodemailer = require("nodemailer");
-const convertTimestamp = require("./convertTimestamp");
+import { GuildScheduledEvent } from "discord.js";
+import nodemailer from "nodemailer";
+import convertTimestamp from "./convertTimestamp";
+
+type Action = "create" | "delete" | "update";
 
 const transporter = nodemailer.createTransport({
-  host: process.env.MAIL_HOST,
+  host: process.env.MAIL_HOST || "",
   port: 587,
   secure: false,
   auth: {
-    user: process.env.MAIL_USER,
-    pass: process.env.MAIL_PASS,
+    user: process.env.MAIL_USER || "",
+    pass: process.env.MAIL_PASS || "",
   },
 });
 
-const handleEventAction = (action) => {
+const handleEventAction = (action: Action) => {
   switch (action) {
     case "create":
       return "created";
@@ -24,7 +27,11 @@ const handleEventAction = (action) => {
   }
 };
 
-const sendMail = async (action, event) => {
+export default async (action: Action, event: GuildScheduledEvent) => {
+  if (!event?.scheduledStartTimestamp) {
+    return;
+  }
+
   try {
     await transporter.sendMail({
       from: `Lean-Coffee bot ${process.env.MAIL_USER}`,
@@ -32,7 +39,7 @@ const sendMail = async (action, event) => {
       subject: `Event was ${handleEventAction(action)}!`,
       text: `${event.name}\n ${event.description}`,
       html: `<b style="font-size:18px">${event.name}, ${convertTimestamp(
-        event.scheduledStartTimestamp
+        event?.scheduledStartTimestamp
       )}</b><br><br> ${event.description}`,
     });
     console.log("mails sent!");
@@ -40,5 +47,3 @@ const sendMail = async (action, event) => {
     console.error(e);
   }
 };
-
-module.exports = sendMail;

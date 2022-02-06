@@ -1,8 +1,9 @@
-var validator = require("validator");
+import { Message } from "discord.js";
+import validator from "validator";
 
-module.exports = {
+export default {
   name: "messageCreate",
-  execute(message) {
+  execute(message: Message) {
     if (message.channel.type == "DM") {
       if (message.content.startsWith("!register-email ")) {
         const userInput = message.content.slice(16).trim();

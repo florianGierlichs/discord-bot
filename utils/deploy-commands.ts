@@ -1,12 +1,17 @@
-require("dotenv").config();
+import * as dotenv from "dotenv";
+import { SlashCommandBuilder } from "@discordjs/builders";
+import { REST } from "@discordjs/rest";
+import { Routes } from "discord-api-types/v9";
 
-const { SlashCommandBuilder } = require("@discordjs/builders");
-const { REST } = require("@discordjs/rest");
-const { Routes } = require("discord-api-types/v9");
+dotenv.config();
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const CLIENT_ID = process.env.CLIENT_ID;
 const GUILD_ID = process.env.GUILD_ID;
+
+if (!BOT_TOKEN || !CLIENT_ID || !GUILD_ID) {
+  throw new Error("Credentials missing");
+}
 
 const commands = [
   new SlashCommandBuilder()
