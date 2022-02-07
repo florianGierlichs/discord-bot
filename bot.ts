@@ -17,7 +17,7 @@ export const startBot = (botToken: string) => {
 
   const eventFiles = fs
     .readdirSync("./events")
-    .filter((file) => file.endsWith(".js"));
+    .filter((file) => file.endsWith(".ts"));
 
   eventFiles.forEach(async (file) => {
     const { default: event }: { default: Event } = await import(
