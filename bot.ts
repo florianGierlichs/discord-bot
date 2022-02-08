@@ -1,5 +1,5 @@
 import * as dotenv from "dotenv";
-import { Client, Intents } from "discord.js";
+import { Client, GuildScheduledEvent, Intents } from "discord.js";
 import fs from "fs";
 import { Event } from "./types/events";
 
@@ -23,7 +23,9 @@ export const startBot = (botToken: string) => {
     const { default: event }: { default: Event } = await import(
       `./events/${file}`
     );
-    client.on(event.name, (...args) => event.execute(...args));
+    client.on(event.name, (...args: GuildScheduledEvent[]) =>
+      event.execute(...args)
+    );
   });
 
   client.once("ready", () => {

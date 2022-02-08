@@ -1,4 +1,6 @@
+import { GuildScheduledEvent } from "discord.js";
+
 export interface Event {
   name: string;
-  execute: (...args: unknown[]) => void;
+  execute: (...args: GuildScheduledEvent[]) => void;
 }
