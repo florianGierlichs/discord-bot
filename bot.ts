@@ -29,7 +29,7 @@ export const startBot = (botToken: string) => {
   });
 
   client.once("ready", () => {
-    console.log("Client Ready!");
+    console.log("Discord Client Ready!");
   });
 
   client
