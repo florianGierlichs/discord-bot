@@ -36,7 +36,10 @@ const handleEventAction = (action: Action) => {
   }
 };
 
-export default async (action: Action, event: GuildScheduledEvent) => {
+export const sendEventActionEmail = async (
+  action: Action,
+  event: GuildScheduledEvent
+) => {
   if (!event?.scheduledStartTimestamp) {
     return;
   }
@@ -51,7 +54,22 @@ export default async (action: Action, event: GuildScheduledEvent) => {
         event?.scheduledStartTimestamp
       )}</b><br><br> ${event.description}`,
     });
-    console.log("mails sent!");
+    console.log("Event emails sent!");
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const sendVerificationEmail = async (mailTo: string) => {
+  try {
+    await transporter.sendMail({
+      from: `Lean-Coffee bot ${MAIL_USER}`,
+      to: mailTo,
+      subject: `Verify your email`,
+      text: "",
+      html: `<p style="font-size:14px">Please verify your registered email to get lean-coffee event notifications <a href="https://www.google.com/">CLICK HERE</a></p>`,
+    });
+    console.log("Verification email sent!");
   } catch (e) {
     console.error(e);
   }

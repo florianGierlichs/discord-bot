@@ -1,11 +1,11 @@
 import { GuildScheduledEvent } from "discord.js";
-import sendMail from "../utils/sendMail";
+import { sendEventActionEmail } from "../utils/emailService";
 
 export default {
   name: "guildScheduledEventUpdate",
   execute(...events: GuildScheduledEvent[]) {
     if (events[1].channelId === process.env.CHANNEL_ID) {
-      sendMail("update", events[1]);
+      sendEventActionEmail("update", events[1]);
     }
   },
 };
