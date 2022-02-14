@@ -2,7 +2,7 @@ import { Schema, model } from "mongoose";
 
 export interface User {
   discordUsername: string;
-  discordId: number;
+  discordId: string;
   email: string;
   isVerified: boolean;
 }
@@ -14,7 +14,7 @@ const userSchema = new Schema<User>(
       required: true,
     },
     discordId: {
-      type: Number,
+      type: String,
       required: true,
     },
     email: {

@@ -1,5 +1,5 @@
 import * as dotenv from "dotenv";
-import express from "express";
+import express, { Request, Response } from "express";
 import mongoose from "mongoose";
 import { startBot } from "./bot";
 
@@ -22,13 +22,13 @@ if (!BOT_TOKEN || !CLIENT_ID || !GUILD_ID) {
 
 app.use(express.json());
 
-// app.get(
-//   "/lean-coffee-email-verification/:email",
-//   (req: Request, res: Response) => {
-//     // send response with JWT with expire date
-//     res.send(req.params.email);
-//   }
-// );
+app.get(
+  "/lean-coffee-email-verification/:discordId",
+  (req: Request, res: Response) => {
+    // send response with JWT with expire date
+    res.send(req.params.discordId);
+  }
+);
 
 mongoose.connect(DB_CONNECTION, () => {
   console.log("connected to db!");

@@ -5,47 +5,50 @@ import { sendVerificationEmail } from "../utils/emailService";
 
 export default {
   name: "messageCreate",
-  execute(message: Message) {
+  async execute(message: Message) {
+    if (message.author.bot) return;
+
     if (message.channel.type == "DM") {
       if (message.content.startsWith("!register-email ")) {
         const userInput = message.content.slice(16).trim();
         if (validator.isEmail(userInput)) {
-          (async () => {
-            try {
-              const existingUser =
-                await monooseHelperInstance.checkExistingEmail(userInput);
+          try {
+            const existingUser = await monooseHelperInstance.checkExistingEmail(
+              userInput
+            );
 
-              if (!existingUser) {
-                // Add to DB and send verification email
-                sendVerificationEmail(userInput);
-                message.author.send(
-                  "Got it! Please check you emails to verify this email-adress  :e_mail: "
-                );
-                return;
-              }
-
-              if (existingUser.isVerified === false) {
-                message.author.send(
-                  "Your email-adress isn't verified jet. Please check your emails to verfiy this email-adress  :eyes:"
-                );
-                return;
-              }
-
-              if (existingUser.isVerified) {
-                message.author.send(
-                  "Your email-adress is already registered. Glad you are part of the lean-coffee team  :fire:"
-                );
-                return;
-              }
-            } catch (e) {
-              if (e instanceof Error) {
-                message.author.send(
-                  "Hmmm, something went wrong. Please contact @papa-stromberg#8281 for support  :poop:"
-                );
-                console.log(e.message);
-              }
+            if (!existingUser) {
+              // createJWT with expire
+              // Add to DB and send verification email
+              sendVerificationEmail(userInput, message.author.id);
+              // Add DB with verified=false + JWT
+              message.author.send(
+                "Got it! Please check you emails to verify this email-adress  :e_mail: "
+              );
+              return;
             }
-          })();
+
+            if (!existingUser.isVerified) {
+              message.author.send(
+                "Your email-adress isn't verified jet. Please check your emails to verfiy this email-adress  :eyes:"
+              );
+              return;
+            }
+
+            if (existingUser.isVerified) {
+              message.author.send(
+                "Your email-adress is already registered. Glad you are part of the lean-coffee team  :fire:"
+              );
+              return;
+            }
+          } catch (e) {
+            if (e instanceof Error) {
+              message.author.send(
+                "Hmmm, something went wrong. Please contact @papa-stromberg#8281 for support  :poop:"
+              );
+              console.log(e.message);
+            }
+          }
         } else {
           message.author.send(
             "Please insert a correct email adress like this: ``!register-email <your@email.com>``"
