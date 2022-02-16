@@ -2,9 +2,10 @@ import { Schema, model } from "mongoose";
 
 export interface User {
   discordUsername: string;
-  discordId: number;
+  discordId: string;
   email: string;
   isVerified: boolean;
+  verificationToken: string;
 }
 
 const userSchema = new Schema<User>(
@@ -14,7 +15,7 @@ const userSchema = new Schema<User>(
       required: true,
     },
     discordId: {
-      type: Number,
+      type: String,
       required: true,
     },
     email: {
@@ -25,8 +26,19 @@ const userSchema = new Schema<User>(
       type: Boolean,
       required: true,
     },
+    verificationToken: {
+      type: String,
+    },
   },
-  { collection: "users" }
+  { collection: "users", timestamps: true }
+);
+
+userSchema.index(
+  { createdAt: 1 },
+  {
+    expireAfterSeconds: 3600,
+    partialFilterExpression: { isVerified: false },
+  }
 );
 
 export const UserModel = model<User>("users", userSchema);

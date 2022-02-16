@@ -60,14 +60,22 @@ export const sendEventActionEmail = async (
   }
 };
 
-export const sendVerificationEmail = async (mailTo: string) => {
+export const sendVerificationEmail = async (
+  mailTo: string,
+  discordId: string,
+  verificationToken: string
+) => {
+  const verificationUrl: string =
+    (process.env.BASE_URL || "http://localhost:3000") +
+    `/lean-coffee-email-verification/${discordId}/${verificationToken}`;
+
   try {
     await transporter.sendMail({
       from: `Lean-Coffee bot ${MAIL_USER}`,
       to: mailTo,
       subject: `Verify your email`,
       text: "",
-      html: `<p style="font-size:14px">Please verify your registered email to get lean-coffee event notifications <a href="https://www.google.com/">CLICK HERE</a></p>`,
+      html: `<p style="font-size:14px">Please verify your email to get lean-coffee event notifications: <a href=${verificationUrl}>VERIFY</a></p>`,
     });
     console.log("Verification email sent!");
   } catch (e) {
