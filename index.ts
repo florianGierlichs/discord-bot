@@ -1,7 +1,9 @@
 import * as dotenv from "dotenv";
 import express, { Request, Response } from "express";
 import mongoose from "mongoose";
-import { startBot } from "./bot";
+import path from "path";
+import { startBot } from "./utils/bot";
+import { monooseHelperInstance } from "./utils/MongoosHelper";
 
 dotenv.config();
 const port = process.env.PORT || 3000;
@@ -23,10 +25,25 @@ if (!BOT_TOKEN || !CLIENT_ID || !GUILD_ID) {
 app.use(express.json());
 
 app.get(
-  "/lean-coffee-email-verification/:discordId",
-  (req: Request, res: Response) => {
-    // send response with JWT with expire date
-    res.send(req.params.discordId);
+  "/lean-coffee-email-verification/:discordId/:verificationToken",
+  async (req: Request, res: Response) => {
+    const { discordId, verificationToken } = req.params;
+
+    const existingUser = await monooseHelperInstance.getUserById(discordId);
+
+    if (
+      !existingUser ||
+      existingUser.verificationToken === "" ||
+      verificationToken !== existingUser.verificationToken
+    ) {
+      return res.sendFile(path.join(__dirname, "/clientResponse/404.html"));
+    }
+
+    existingUser.verificationToken = "";
+    existingUser.isVerified = true;
+    await monooseHelperInstance.updateUser(existingUser);
+
+    return res.sendFile(path.join(__dirname, "/clientResponse/verified.html"));
   }
 );
 

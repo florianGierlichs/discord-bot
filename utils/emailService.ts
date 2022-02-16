@@ -62,11 +62,12 @@ export const sendEventActionEmail = async (
 
 export const sendVerificationEmail = async (
   mailTo: string,
-  discordId: string
+  discordId: string,
+  verificationToken: string
 ) => {
   const verificationUrl: string =
     (process.env.BASE_URL || "http://localhost:3000") +
-    `/lean-coffee-email-verification/${discordId}`;
+    `/lean-coffee-email-verification/${discordId}/${verificationToken}`;
 
   try {
     await transporter.sendMail({

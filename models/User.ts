@@ -5,6 +5,7 @@ export interface User {
   discordId: string;
   email: string;
   isVerified: boolean;
+  verificationToken: string;
 }
 
 const userSchema = new Schema<User>(
@@ -25,8 +26,19 @@ const userSchema = new Schema<User>(
       type: Boolean,
       required: true,
     },
+    verificationToken: {
+      type: String,
+    },
   },
-  { collection: "users" }
+  { collection: "users", timestamps: true }
+);
+
+userSchema.index(
+  { createdAt: 1 },
+  {
+    expireAfterSeconds: 3600,
+    partialFilterExpression: { isVerified: false },
+  }
 );
 
 export const UserModel = model<User>("users", userSchema);

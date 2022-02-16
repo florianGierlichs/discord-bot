@@ -1,5 +1,6 @@
 import { Message } from "discord.js";
 import validator from "validator";
+import randomstring from "randomstring";
 import { monooseHelperInstance } from "../utils/MongoosHelper";
 import { sendVerificationEmail } from "../utils/emailService";
 
@@ -13,15 +14,26 @@ export default {
         const userInput = message.content.slice(16).trim();
         if (validator.isEmail(userInput)) {
           try {
-            const existingUser = await monooseHelperInstance.checkExistingEmail(
-              userInput
+            const existingUser = await monooseHelperInstance.getUserById(
+              message.author.id
             );
 
             if (!existingUser) {
-              // createJWT with expire
-              // Add to DB and send verification email
-              sendVerificationEmail(userInput, message.author.id);
-              // Add DB with verified=false + JWT
+              const verificationToken = randomstring.generate();
+
+              await monooseHelperInstance.saveUser(
+                message.author.username,
+                message.author.id,
+                userInput,
+                verificationToken
+              );
+
+              sendVerificationEmail(
+                userInput,
+                message.author.id,
+                verificationToken
+              );
+
               message.author.send(
                 "Got it! Please check you emails to verify this email-adress  :e_mail: "
               );
@@ -37,7 +49,11 @@ export default {
 
             if (existingUser.isVerified) {
               message.author.send(
-                "Your email-adress is already registered. Glad you are part of the lean-coffee team  :fire:"
+                "You already registered your email adress " +
+                  "``" +
+                  `${existingUser.email}` +
+                  "``" +
+                  ". Glad you are part of the lean-coffee team  :fire:"
               );
               return;
             }
@@ -54,10 +70,6 @@ export default {
             "Please insert a correct email adress like this: ``!register-email <your@email.com>``"
           );
         }
-
-        // else send email with validation link and send respond message with email validation notification
-        // await email validation from user via link and GET
-        // save userInput(valid email =)) in DB
       }
       return;
     }
