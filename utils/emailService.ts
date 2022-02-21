@@ -1,15 +1,15 @@
 import { GuildScheduledEvent } from "discord.js";
 import nodemailer from "nodemailer";
 import convertTimestamp from "./convertTimestamp";
+import { monooseHelperInstance } from "./MongoosHelper";
 
 type Action = "create" | "delete" | "update";
 
 const MAIL_HOST = process.env.MAIL_HOST;
 const MAIL_USER = process.env.MAIL_USER;
 const MAIL_PASS = process.env.MAIL_PASS;
-const MAIL_TO = process.env.MAIL_TO;
 
-if (!MAIL_HOST || !MAIL_USER || !MAIL_PASS || !MAIL_TO) {
+if (!MAIL_HOST || !MAIL_USER || !MAIL_PASS) {
   throw new Error("Email credentials missing");
 }
 
@@ -36,7 +36,7 @@ const handleEventAction = (action: Action) => {
   }
 };
 
-export const sendEventActionEmail = async (
+export const sendEventActionEmails = async (
   action: Action,
   event: GuildScheduledEvent
 ) => {
@@ -44,10 +44,12 @@ export const sendEventActionEmail = async (
     return;
   }
 
+  const validEmails = await monooseHelperInstance.getAllValidEmails();
+
   try {
     await transporter.sendMail({
       from: `Lean-Coffee bot ${MAIL_USER}`,
-      to: `${MAIL_TO}`,
+      bcc: validEmails,
       subject: `Event was ${handleEventAction(action)}!`,
       text: `${event.name}\n ${event.description}`,
       html: `<b style="font-size:18px">${event.name}, ${convertTimestamp(
