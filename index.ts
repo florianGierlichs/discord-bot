@@ -15,10 +15,8 @@ if (!DB_CONNECTION) {
 }
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
-const CLIENT_ID = process.env.CLIENT_ID;
-const GUILD_ID = process.env.GUILD_ID;
 
-if (!BOT_TOKEN || !CLIENT_ID || !GUILD_ID) {
+if (!BOT_TOKEN) {
   throw new Error("Discord credentials missing");
 }
 
