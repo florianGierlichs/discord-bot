@@ -29,6 +29,19 @@ class MongooseHelper {
   async updateUser(user: Document<unknown, any, User>) {
     await user.save();
   }
+
+  async getAllValidEmails() {
+    const allUsers = await UserModel.find({});
+
+    const validEmails = allUsers.reduce((emails: string[], user) => {
+      if (user.isVerified) {
+        emails.push(user.email);
+      }
+      return emails;
+    }, []);
+
+    return validEmails;
+  }
 }
 
 export const monooseHelperInstance = new MongooseHelper();
