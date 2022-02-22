@@ -22,6 +22,10 @@ if (!BOT_TOKEN) {
 
 app.use(express.json());
 
+app.get("/", (_req: Request, res: Response) => {
+  res.json({ message: "Hello lean-coffee!" });
+});
+
 app.get(
   "/lean-coffee-email-verification/:discordId/:verificationToken",
   async (req: Request, res: Response) => {

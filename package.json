@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npm run deploy-commands && ts-node --transpile-only index.ts",
     "dev": "nodemon",
-    "deploy-commands": "ts-node utils/deploy-commands.ts"
+    "deploy-commands": "ts-node --transpile-only utils/deploy-commands.ts"
   },
   "author": "Florian Gierlichs",
   "license": "MIT",
