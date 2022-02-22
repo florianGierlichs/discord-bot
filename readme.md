@@ -21,8 +21,10 @@ The bot will only react to events which happen in a channel called `lean-coffee`
 
 ## Tech Stack
 
+- [TypeScript](https://www.typescriptlang.org/) :zap:
 - [discord.js](https://discord.js.org/#/docs/discord.js/stable/general/welcome) :fire:
 - [nodemailer](https://nodemailer.com/about/) :mailbox:
+- [MongoDB](https://www.mongodb.com/) :open_file_folder:
 - [docker](https://docs.docker.com/get-started/) :whale:
 
 # Usage
@@ -31,6 +33,7 @@ To use the bot, you need to
 
 - create a new application on the [discord developer portal](https://discord.com/developers/applications)
 - add a bot inside that application
+- create a MongoDB
 - generate an OAuth URL to link the bot to your discord server
   - make sure to activate `applications.commands` and `bot` in the OAuth URL Generator ![OAuth URL Generator](https://discordnet.dev/guides/int_basics/application-commands/slash-commands/images/oauth.png)
 - add an .env file somewhere on your machine with the following credentials:
@@ -45,7 +48,7 @@ MAIL_HOST=XXX
 MAIL_USER=XXX
 MAIL_PASS=XXX
 
-MAIL_TO=exampleEmail1@gmail.com, john@doe.com, ...
+DB_CONNECTION=XXX
 ```
 
 - the mails get send via [nodemailer](https://nodemailer.com/about/), so make sure to add the correct mail-host for your provider
