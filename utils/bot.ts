@@ -34,5 +34,10 @@ export const startBot = (botToken: string) => {
 
   client
     .login(botToken)
+    .then(() =>
+      client.user?.setActivity("!register-email <your@email.com>", {
+        type: "LISTENING",
+      })
+    )
     .then(() => console.log("WebSocket connected to discord!"));
 };

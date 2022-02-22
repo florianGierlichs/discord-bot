@@ -37,8 +37,16 @@ export default {
 
           await interaction.reply({
             content: upcomingLeanCoffeeEvent
-              ? `Upcoming lean-coffee event: ${upcomingLeanCoffeeEvent}`
-              : "There is no scheduled Lean-Coffee at the moment!",
+              ? "Upcoming lean-coffee event: " +
+                `${upcomingLeanCoffeeEvent}` +
+                ". If you want to get email notifications about all lean-coffee events, you can register your email to <@" +
+                `${process.env.CLIENT_ID}` +
+                "> with the command " +
+                "``!register-email <your@email.com>``"
+              : "There is no scheduled Lean-Coffee at the moment! If you want to get email notifications about all lean-coffee events, you can register your email to <@" +
+                `${process.env.CLIENT_ID}` +
+                "> with the command " +
+                "``!register-email <your@email.com>``",
             ephemeral: true,
           });
           break;
