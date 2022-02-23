@@ -36,7 +36,7 @@ const userSchema = new Schema<User>(
 userSchema.index(
   { createdAt: 1 },
   {
-    expireAfterSeconds: 3600,
+    expireAfterSeconds: 3600 * 24,
     partialFilterExpression: { isVerified: false },
   }
 );
