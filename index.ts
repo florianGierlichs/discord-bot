@@ -49,17 +49,15 @@ app.get(
   }
 );
 
-const connectDB = async () => {
-  await mongoose.connect(DB_CONNECTION, () => {
-    console.log("connected to db!");
+mongoose.connect(DB_CONNECTION);
 
-    app.listen(port, (err?: Error) => {
-      if (err) throw new Error(err.message);
-      console.log(`> Ready on localhost:${port} - env ${process.env.NODE_ENV}`);
-    });
+mongoose.connection.once("open", function () {
+  console.log("connected to db!");
+
+  app.listen(port, (err?: Error) => {
+    if (err) throw new Error(err.message);
+    console.log(`> Ready on localhost:${port} - env ${process.env.NODE_ENV}`);
   });
-};
-
-connectDB();
+});
 
 startBot(BOT_TOKEN);
