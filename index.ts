@@ -23,6 +23,7 @@ if (!BOT_TOKEN) {
 app.use(express.json());
 
 app.get("/", (_req: Request, res: Response) => {
+  console.log("BASE_URL was called");
   res.json({ message: "Hello lean-coffee!" });
 });
 
