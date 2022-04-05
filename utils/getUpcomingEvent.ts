@@ -6,6 +6,7 @@ export default (
     GuildScheduledEvent<"SCHEDULED" | "ACTIVE" | "COMPLETED" | "CANCELED">
   >
 ) => {
+  console.log("EVENTS:::", events);
   const leanCoffeeEvents = [...events]
     .filter((event) => {
       return event[1].channelId === process.env.CHANNEL_ID;
