@@ -8,4 +8,4 @@ RUN npm install
 
 COPY . .
 
-CMD node utils/deploy-commands.js && node index.js
+CMD npm start
