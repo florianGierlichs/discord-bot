@@ -28,7 +28,7 @@ export default {
                 verificationToken
               );
 
-              sendVerificationEmail(
+              await sendVerificationEmail(
                 userInput,
                 message.author.id,
                 verificationToken
