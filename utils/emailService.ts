@@ -69,7 +69,7 @@ export const sendVerificationEmail = async (
   verificationToken: string
 ) => {
   const verificationUrl: string =
-    (process.env.BASE_URL || "http://localhost:3000") +
+    (process.env.BASE_URL?.toString() || "http://localhost:3000") +
     `/lean-coffee-email-verification/${discordId}/${verificationToken}`;
 
   try {
