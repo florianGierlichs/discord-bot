@@ -1,6 +1,7 @@
 import { GuildScheduledEvent } from "discord.js";
 import nodemailer from "nodemailer";
 import convertTimestamp from "./convertTimestamp";
+import { log } from "./log";
 import { monooseHelperInstance } from "./MongoosHelper";
 
 type Action = "create" | "delete" | "update";
@@ -79,7 +80,7 @@ export const sendVerificationEmail = async (
       text: "",
       html: `<p style="font-size:14px">Please verify your email to get lean-coffee event notifications: <a href=${verificationUrl}>VERIFY</a></p>`,
     });
-    console.log("Verification email sent!", mailTo);
+    log("Verification email sent!", mailTo);
   } catch (e) {
     console.error(e);
   }

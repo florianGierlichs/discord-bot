@@ -3,6 +3,7 @@ import express, { Request, Response } from "express";
 import mongoose from "mongoose";
 import path from "path";
 import { startBot } from "./utils/bot";
+import { log } from "./utils/log";
 import { monooseHelperInstance } from "./utils/MongoosHelper";
 
 dotenv.config();
@@ -23,7 +24,6 @@ if (!BOT_TOKEN) {
 app.use(express.json());
 
 app.get("/", (_req: Request, res: Response) => {
-  console.log("BASE_URL was called");
   res.json({ message: "Hello lean-coffee!" });
 });
 
@@ -57,7 +57,7 @@ mongoose.connection.once("open", function () {
 
   app.listen(port, (err?: Error) => {
     if (err) throw new Error(err.message);
-    console.log(`> Ready on localhost:${port} - env ${process.env.NODE_ENV}`);
+    log(`Server ready!`);
   });
 });
 
