@@ -68,9 +68,14 @@ export const sendVerificationEmail = async (
   discordId: string,
   verificationToken: string
 ) => {
-  const verificationUrl: string =
-    (process.env.BASE_URL?.toString() || "http://localhost:3000") +
-    `/lean-coffee-email-verification/${discordId}/${verificationToken}`;
+  const path = `/lean-coffee-email-verification/${discordId}/${verificationToken}`;
+  const verificationUrl = () => {
+    if (process.env.BASE_URL !== undefined) {
+      return "http://" + process.env.BASE_URL + path;
+    } else {
+      return "http://localhost:3000" + path;
+    }
+  };
 
   try {
     await transporter.sendMail({
@@ -78,7 +83,7 @@ export const sendVerificationEmail = async (
       to: mailTo,
       subject: `Verify your email`,
       text: "",
-      html: `<p style="font-size:14px">Please verify your email to get lean-coffee event notifications: <a href=${verificationUrl}>VERIFY</a></p>`,
+      html: `<p style="font-size:14px">Please verify your email to get lean-coffee event notifications: <a href=${verificationUrl()}>VERIFY</a></p>`,
     });
     log("Verification email sent!", mailTo);
   } catch (e) {
