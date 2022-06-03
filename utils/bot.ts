@@ -2,10 +2,12 @@ import * as dotenv from "dotenv";
 import { Client, GuildScheduledEvent, Intents } from "discord.js";
 import fs from "fs";
 import { Event } from "../types/events";
+import { log } from "./log";
 
 dotenv.config();
 
 export const startBot = (botToken: string) => {
+  log("Start bot");
   const client = new Client({
     intents: [
       Intents.FLAGS.GUILDS,

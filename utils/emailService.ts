@@ -1,6 +1,7 @@
 import { GuildScheduledEvent } from "discord.js";
 import nodemailer from "nodemailer";
 import convertTimestamp from "./convertTimestamp";
+import { ScheduledEvent } from "./getEvents";
 import { log } from "./log";
 import { monooseHelperInstance } from "./MongoosHelper";
 
@@ -57,7 +58,7 @@ export const sendEventActionEmails = async (
         event?.scheduledStartTimestamp
       )}</b><br><br> ${event.description}`,
     });
-    console.log("Event emails sent!");
+    log(`Event ${action} => emails sent!`);
   } catch (e) {
     console.error(e);
   }
@@ -86,6 +87,25 @@ export const sendVerificationEmail = async (
       html: `<p style="font-size:14px">Please verify your email to get lean-coffee event notifications: <a href=${verificationUrl()}>VERIFY</a></p>`,
     });
     log("Verification email sent!", mailTo);
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const sendReminderEmail = async (event: ScheduledEvent) => {
+  const validEmails = await monooseHelperInstance.getAllValidEmails();
+
+  try {
+    await transporter.sendMail({
+      from: `Lean-Coffee bot ${MAIL_USER}`,
+      bcc: validEmails,
+      subject: `Reminder for lean-coffee tomorrow!`,
+      text: `${event.name}\n ${event.description}`,
+      html: `<b style="font-size:18px">${event.name}, ${convertTimestamp(
+        new Date(event.scheduled_start_time).getTime()
+      )}</b><br><br> ${event.description}`,
+    });
+    log("Reminder emails for event tomorrow sent!", event);
   } catch (e) {
     console.error(e);
   }
