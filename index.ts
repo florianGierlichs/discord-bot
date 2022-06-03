@@ -3,6 +3,7 @@ import express, { Request, Response } from "express";
 import mongoose from "mongoose";
 import path from "path";
 import { startBot } from "./utils/bot";
+import { startCronjob } from "./utils/cron";
 import { log } from "./utils/log";
 import { monooseHelperInstance } from "./utils/MongoosHelper";
 
@@ -45,20 +46,24 @@ app.get(
     existingUser.verificationToken = "";
     existingUser.isVerified = true;
     await monooseHelperInstance.updateUser(existingUser);
+    log("User verified: ", existingUser);
 
     return res.sendFile(path.join(__dirname, "/clientResponse/verified.html"));
   }
 );
 
-mongoose.connect(DB_CONNECTION);
-
-mongoose.connection.once("open", function () {
-  console.log("connected to db!");
+const connectToDbAndStartServer = async () => {
+  await mongoose.connect(DB_CONNECTION);
+  log(`Connected to DB!`);
 
   app.listen(port, (err?: Error) => {
     if (err) throw new Error(err.message);
     log(`Server ready!`);
-  });
-});
 
-startBot(BOT_TOKEN);
+    startBot(BOT_TOKEN);
+
+    startCronjob();
+  });
+};
+
+connectToDbAndStartServer();
