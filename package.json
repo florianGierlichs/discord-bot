@@ -8,7 +8,8 @@
     "dev": "nodemon",
     "deploy-commands": "ts-node --transpile-only utils/deploy-commands.ts",
     "cronjob": "ts-node --transpile-only utils/cron.ts",
-    "test": "jest"
+    "test": "jest",
+    "prepare": "husky install"
   },
   "author": "Florian Gierlichs",
   "license": "MIT",
@@ -36,6 +37,7 @@
     "@types/nodemailer": "^6.4.4",
     "@types/randomstring": "^1.1.8",
     "@types/validator": "^13.7.1",
+    "husky": "^8.0.1",
     "jest": "^28.1.1",
     "nodemon": "^2.0.15",
     "ts-jest": "^28.0.5",
