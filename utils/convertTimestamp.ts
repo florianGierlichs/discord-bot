@@ -6,6 +6,7 @@ const convertTimestamp = (timestamp: number) => {
     day: "numeric",
     hour: "numeric",
     minute: "numeric",
+    timeZone: "Europe/Brussels",
   });
 };
 
