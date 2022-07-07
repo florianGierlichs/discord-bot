@@ -48,15 +48,19 @@ export const sendEventActionEmails = async (
 
   const validEmails = await monooseHelperInstance.getAllValidEmails();
 
+  const htmlBody = `<b style="font-size:18px">Event was ${handleEventAction(
+    action
+  )}:<br><br>${event.name}, ${convertTimestamp(
+    event?.scheduledStartTimestamp
+  )}</b><br><br> ${event.description}`;
+
   try {
     await transporter.sendMail({
       from: `Lean-Coffee bot ${MAIL_USER}`,
       bcc: validEmails,
       subject: `Event was ${handleEventAction(action)}!`,
       text: `${event.name}\n ${event.description}`,
-      html: `<b style="font-size:18px">${event.name}, ${convertTimestamp(
-        event?.scheduledStartTimestamp
-      )}</b><br><br> ${event.description}`,
+      html: htmlBody,
     });
     log(`Event ${action} => emails sent!`);
   } catch (e) {

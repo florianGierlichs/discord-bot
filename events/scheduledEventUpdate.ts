@@ -6,7 +6,10 @@ import { log } from "../utils/log";
 export default {
   name: "guildScheduledEventUpdate",
   execute(...events: GuildScheduledEvent[]) {
-    if (events[1].channelId === process.env.CHANNEL_ID) {
+    if (
+      events[1].channelId === process.env.CHANNEL_ID &&
+      events[1].status === "SCHEDULED"
+    ) {
       sendEventActionEmails("update", events[1]);
 
       if (events[1].scheduledStartTimestamp) {
